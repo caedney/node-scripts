@@ -17,7 +17,7 @@ function generateEuroMillionNumbers() {
   const numbers = generateNumbers(5, 50, []);
   const stars = generateNumbers(2, 12, []);
 
-  return numbers.concat(stars).join(" ");
+  return numbers.concat("⭐", stars).join(" ");
 }
 
 const winningNumbers = generateEuroMillionNumbers();
