@@ -1,5 +1,4 @@
 const fs = require("fs");
-// nodejs.org/api/fs.html
 
 function flatten(inputObject, inputKeyElements) {
   const outputObject = {};
@@ -42,7 +41,7 @@ const formattedJson = JSON.stringify(flattenedJsonData, null, 4);
 fs.writeFile(
   "/Users/craig/Desktop/general-en-GB-flat.json",
   formattedJson,
-  err => {
+  (err) => {
     if (err) {
       throw err;
     }
