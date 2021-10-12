@@ -9,7 +9,7 @@ const iconFileNames = fs
     const iconName = file.replace(".svg", "");
 
     if (/^\w+.svg$/.test(file)) {
-      return `export { ReactComponent as ${iconName} } from './${file}'`;
+      return `export { ReactComponent as ${iconName}Icon } from './${file}'`;
     }
 
     return null;
@@ -17,14 +17,10 @@ const iconFileNames = fs
   .filter(a => a)
   .join("\n");
 
-fs.writeFile(
-  "/Users/craig/Documents/Clients/Vodafone/vodafone-vigor/vdf-content-hub/apps/admin/code/src/images/icons/index.js",
-  iconFileNames,
-  err => {
-    if (err) {
-      throw err;
-    }
-
-    console.log("The file has been saved!");
+fs.writeFile(`${icons}/index.js`, iconFileNames, err => {
+  if (err) {
+    throw err;
   }
-);
+
+  console.log("The file has been saved!");
+});
