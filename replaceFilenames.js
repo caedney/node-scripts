@@ -33,16 +33,20 @@ const frontEndPaths = [
           const newFile = file.replace(
             startsWithNumberOrHasCapital,
             (match, p) => {
-              if (typeof match === 'number') {
-                return `icon-${match}`;
+              if (isNaN(match)) {
+                return match.toLowerCase();
               }
 
-              return match.toLowerCase();
+              return `icon-${match}`;
             }
           );
 
           fs.rename(path + file, path + newFile, function (err) {
-            if (err) throw err;
+            if (err) {
+              throw err;
+            }
+
+            console.log(file, 'has successfully be renamed to', newFile);
           });
         }
       });
