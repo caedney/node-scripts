@@ -1,8 +1,7 @@
 const fs = require('fs');
 const { parse } = require('parse5');
 
-const fileDir =
-  '/Users/craigedney/Documents/Clients/Vodafone/resources/5g/images';
+const fileDir = '/Users/craigedney/Desktop/animations';
 const outputPath =
   '/Users/craigedney/Documents/Clients/Vodafone/vdf-front-end/src/long-form/five-g/utils';
 
@@ -30,14 +29,13 @@ const rawHtml = fs
     if (/^.+svg$/.test(file)) {
       const html = fs.readFileSync(`${fileDir}/${file}`, 'utf8');
       const root = parse(html);
-      const title =
-        root.childNodes[1].childNodes[1].childNodes[0].childNodes[1].attrs[1]
-          .value;
-      const paths = getPaths(root.childNodes[1].childNodes[1].childNodes[0]);
+      const svg = root.childNodes[0].childNodes[1].childNodes[0];
+      const viewBox = svg.attrs[2].value;
+      const paths = getPaths(svg);
 
       return {
         [fileName]: {
-          title,
+          viewBox,
           paths,
         },
       };
@@ -49,7 +47,7 @@ const rawHtml = fs
 
 const formattedJson = JSON.stringify(rawHtml, null, 2);
 
-fs.writeFile(`${outputPath}/titles.json`, formattedJson, (err) => {
+fs.writeFile(`${outputPath}/animations.json`, formattedJson, (err) => {
   if (err) {
     throw err;
   }
