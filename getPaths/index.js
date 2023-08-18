@@ -21,29 +21,27 @@ function getPaths(obj) {
   return null;
 }
 
-const rawHtml = fs
-  .readdirSync(fileDir)
-  .map((file) => {
-    const fileName = file.replace('.svg', '');
+const rawHtml = fs.readdirSync(fileDir).reduce((accumulator, file) => {
+  const fileName = file.replace('.svg', '');
 
-    if (/^.+svg$/.test(file)) {
-      const html = fs.readFileSync(`${fileDir}/${file}`, 'utf8');
-      const root = parse(html);
-      const svg = root.childNodes[0].childNodes[1].childNodes[0];
-      const viewBox = svg.attrs[2].value;
-      const paths = getPaths(svg);
+  if (/^.+svg$/.test(file)) {
+    const html = fs.readFileSync(`${fileDir}/${file}`, 'utf8');
+    const root = parse(html);
+    const svg = root.childNodes[0].childNodes[1].childNodes[0];
+    const viewBox = svg.attrs[2].value;
+    const path = getPaths(svg);
 
-      return {
-        [fileName]: {
-          viewBox,
-          paths,
-        },
-      };
-    }
+    return {
+      ...accumulator,
+      [fileName]: {
+        viewBox,
+        path,
+      },
+    };
+  }
 
-    return null;
-  })
-  .filter(Boolean);
+  return accumulator;
+}, {});
 
 const formattedJson = JSON.stringify(rawHtml, null, 2);
 
